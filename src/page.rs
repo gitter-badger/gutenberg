@@ -131,13 +131,12 @@ impl Page {
         page.parent_path = page.file_path.parent().unwrap().to_path_buf();
         page.raw_content = content;
 
-        let highlight_theme = config.highlight_theme.clone().unwrap();
-        page.content = markdown_to_html(&page.raw_content, config.highlight_code.unwrap(), &highlight_theme);
+        page.content = markdown_to_html(&page.raw_content, config);
 
         if page.raw_content.contains("<!-- more -->") {
             page.summary = {
                 let summary = page.raw_content.splitn(2, "<!-- more -->").collect::<Vec<&str>>()[0];
-                markdown_to_html(summary, config.highlight_code.unwrap(), &highlight_theme)
+                markdown_to_html(summary, config)
             }
         }
 
